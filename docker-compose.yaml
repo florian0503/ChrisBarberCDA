@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  database:
+    container_name: ${DOCKER_PROJECT_NAME}.mariadb
+    image: mariadb:10.5.21
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DOCKER_ROOT_PWD}
+      MYSQL_DATABASE: ${DOCKER_DATABASE}
+      MYSQL_USER: ${DOCKER_USER}
+      MYSQL_PASSWORD: ${DOCKER_USER_PWD}
+      TZ: "Europe/Paris"
+    volumes:
+      - dbdata:/var/lib/mysql
+      - exchangedata:/data
+      - ./init/db:/docker-entrypoint-initdb.d
+      - ./var/docker/mariadb:/var/docker/mariadb
+    networks:
+      - dev
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized", "--mariadbupgrade" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  phpmyadmin:
+    container_name: ${DOCKER_PROJECT_NAME}.phpmyadmin
+    image: phpmyadmin:latest
+    depends_on:
+      - database
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: database
+      UPLOAD_LIMIT: 50M
+      TZ: "Europe/Paris"
+    networks:
+      - dev
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:80 || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  mailer:
+    container_name: ${DOCKER_PROJECT_NAME}.maildev
+    image: maildev/maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+    networks:
+      - dev
+
+  rabbitmq:
+    container_name: ${DOCKER_PROJECT_NAME}.rabbitmq
+    image: rabbitmq:management-alpine
+    environment:
+      - RABBITMQ_DEFAULT_USER=florian
+      - RABBITMQ_DEFAULT_PASS=florian
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmqData:/var/lib/rabbitmq
+      - rabbitmqLog:/var/log/rabbitmq
+      - ./var/docker/rabbitmq/log:/var/docker/rabbitmq/log
+    networks:
+      - rabbitmq_go_net
+      - dev
+    healthcheck:
+      test: [ "CMD-SHELL", "rabbitmq-diagnostics -q ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+networks:
+  dev:
+  rabbitmq_go_net:
+    driver: bridge
+  meilisearch_go_net:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
+  exchangedata:
+    driver: local
+  rabbitmqData:
+  rabbitmqLog:
