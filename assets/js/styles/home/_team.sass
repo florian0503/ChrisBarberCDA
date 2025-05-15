@@ -1,0 +1,51 @@
+// assets/styles/_team.scss
+$transition: 0.3s
+
+.team
+    padding: 4rem 0
+    background-color: #000
+
+    &__title
+        font-family: serif
+        font-size: 32px
+        color: #fff
+        text-transform: uppercase
+        margin-bottom: 0.5rem
+
+    &__subtitle
+        color: #fff
+        margin-bottom: 3rem
+
+    &__list
+        display: flex
+        gap: 2rem
+        flex-wrap: nowrap
+        justify-content: space-between
+
+    &__item
+        flex: 1
+        max-width: 18%
+        text-align: center
+
+    &__card
+        position: relative
+        overflow: hidden
+        border-radius: 0.5rem
+
+    &__image
+        display: block
+        width: 100%
+        transition: transform $transition ease
+
+    &__name
+        position: absolute
+        bottom: 1rem
+        left: 50%
+        transform: translateX(-50%)
+        font-family: serif
+        font-size: 22px
+        color: $gold
+        pointer-events: none
+
+    &__card:hover &__image
+        transform: scale(1.05)
