@@ -1,0 +1,54 @@
+$transition   : 0.3s
+
+.cards
+  display: flex
+  gap: 2rem
+  padding: 2rem 0
+  background: black
+
+  &__item
+    flex: 1
+    text-align: center
+
+  &__title
+    font-family: serif
+    font-size: 2rem
+    text-transform: uppercase
+    color: #fff
+    margin-bottom: 1rem
+      
+  &__title--color
+    color: $gray-light
+
+  &__text
+    color: #fff
+    line-height: 1.5
+    margin-bottom: 2rem
+
+  &__button
+    display: inline-block
+    padding: 0.75rem 5rem
+    border-radius: 50px
+    text-decoration: none
+    font-weight: 500
+    border: 4px solid #ffffff00
+    transition: transform $transition
+
+    // modifiers
+    &--secondary
+      background: #fff
+      color: #000
+
+    &--primary
+      background: $gray-light
+      color: #000
+
+    &--tertiary
+      background: $gold
+      color: #000
+
+    // animation au survol
+    &:hover
+      background: #fff
+      border-color: $gold
+      transition: background 0.3s, border-color 0.3s, color 0.3s
