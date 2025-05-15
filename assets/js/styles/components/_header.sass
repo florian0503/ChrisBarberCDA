@@ -1,0 +1,42 @@
+.header
+  position: absolute
+  top: 0
+  width: 100%
+  z-index: 99
+  background-color: transparent !important
+
+  &__container
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: 0 1rem
+    border-bottom: 1px solid $gold
+
+  &__logo img
+    margin-left: 50px
+    height: 70px
+
+  &__nav
+    display: flex
+    align-items: center
+
+  &__separator
+    flex: 0 0 auto
+    width: 1px
+    height: 2rem
+    background-color: $gold
+    margin: 0 1.5rem
+
+  &__nav-link
+    color: #fff
+    font-size: 1.25rem
+    padding: 0 0.5rem
+    text-decoration: none
+
+    &--active
+      color: $gold
+
+  &__user-icon img
+    height: 50px
+    margin-right: 50px
+
