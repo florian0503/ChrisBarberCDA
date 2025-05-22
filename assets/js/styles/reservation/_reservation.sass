@@ -1,0 +1,84 @@
+.bg-black
+  background-color: black
+
+.prestations
+    border: 1px solid #d4af37
+    border-radius: 1.5rem
+    padding: 2rem
+    &__heading
+        font-family: serif
+        font-size: 2.5rem
+        color: #fff
+        margin-bottom: 2rem 
+
+        &s
+    &__item
+        display: flex;
+        background: #121212;
+        border: 1px solid #d4af37;
+        border-radius: .75rem;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        justify-content: space-between;
+        align-items: start;
+
+        .card-body
+            padding: 1.5rem 
+
+    &__title
+        font-size: 1.25rem
+        margin-bottom: .5rem
+        color: #fff 
+
+    &__summary
+        font-size: .9rem
+        color: #ccc
+        max-width: 40rem    
+
+    &__toggle
+        color: #fff !important
+        background: transparent !important
+        text-decoration: none !important
+        box-shadow: none !important
+        cursor: pointer
+
+        &:hover
+            color: #fff !important
+
+        &:focus
+            color: #fff !important
+            background: transparent !important
+            text-decoration: none !important
+            box-shadow: none !important
+
+    &__icon--up
+        display: none
+        margin-left: .25rem 
+
+    .collapse.show + &__toggle .prestations__icon--down  
+        display: none
+    .collapse.show + &__toggle .prestations__icon--up    
+        display: inline-block  
+
+    &__details
+        font-size: .9rem
+        color: #ccc
+        padding-left: 1rem  
+
+    &__detail
+        margin-bottom: .25rem   
+
+    &__actions
+        min-width: 8rem 
+
+    &__price
+        font-weight: bold
+        color: #fff 
+
+    &__duration
+        font-size: .85rem   
+
+    &__btn
+        border-radius: .5rem
+        padding: .375rem 1.25rem    
+

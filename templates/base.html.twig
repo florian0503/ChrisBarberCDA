@@ -3,16 +3,21 @@
   <head>
     <meta charset="UTF-8">
     <title>{% block title %}Titre de la page{% endblock %}</title>
-
     {% block stylesheets %}
       {{ encore_entry_link_tags('app') }}
     {% endblock %}
   </head>
   <body>
+    {# On inclut le header et on lui transmet headerMode s’il existe #}
+    {% include 'components/_header.html.twig' with {
+      headerMode: headerMode|default(null)
+    } %}
 
     {% block body %}
       Contenu de la page.
     {% endblock %}
+
+    {% include 'components/_footer.html.twig' %}
 
     {% block javascripts %}
       {{ encore_entry_script_tags('app') }}
