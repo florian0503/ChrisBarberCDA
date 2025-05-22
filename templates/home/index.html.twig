@@ -1,25 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil — ChrisBarber Shop{% endblock %}
+{% block title %}Accueil — ChrisBarber Shop
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style>
+		.header {
+			position: absolute;
+			top: 0;
+		}
+	</style>
+{% endblock %}
 
 {% block body %}
-  <div class="home__hero-wrapper">
-    {% include 'components/_header.html.twig' %}
-    <img src="{{ asset('images/chrisbarber_salon.png') }}"
-         alt="Salon ChrisBarber"
-         class="home__salon">
-  </div>
-  <div class="separator"></div>
+	<div class="home__hero-wrapper">
+		<img src="{{ asset('images/chrisbarber_salon.png') }}" alt="Salon ChrisBarber" class="home__salon">
+	</div>
+	<div class="separator"></div>
 
-  <div class="cards">
-    {% include 'home/_card.html.twig' %}
-  </div>
-  <div class="separator"></div>
-    <div class="team">
-    {% include 'home/_team.html.twig' %}
-  </div>
-  <div class="separator"></div>
-    {% include 'home/_location.html.twig' %}
-  <div class="separator"></div>
-    {% include 'components/_footer.html.twig' %}
+	<div class="cards">
+		{% include 'home/_card.html.twig' %}
+	</div>
+	<div class="separator"></div>
+	<div class="team">
+		{% include 'home/_team.html.twig' %}
+	</div>
+	<div class="separator"></div>
+	{% include 'home/_location.html.twig' %}
+	<div class="separator"></div>
 {% endblock %}
