@@ -6,6 +6,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\BarberRepository; // Ajoutez cette ligne
 
 class ReservationController extends AbstractController
 {
@@ -129,10 +130,32 @@ class ReservationController extends AbstractController
             ],
         ];
 
-        // 2) On rend le template en passant headerMode ET prestations
         return $this->render('reservation/reservation.html.twig', [
             'headerMode'  => 'gris',
             'prestations' => $prestations,
+        ]);
+    }
+
+    #[Route('/reservation/step2', name: 'reservation_step2')]
+    public function selectBarber(BarberRepository $barberRepository): Response
+    {
+        $barbers = $barberRepository->findAll();
+
+        return $this->render('reservation/select_barber.html.twig', [
+            'headerMode'  => 'gris',
+            'barbers' => $barbers,
+        ]);
+    }
+
+    #[Route('/reservation/confirm', name: 'reservation_confirm', methods: ['POST'])]
+    public function confirm(Request $request, BarberRepository $barberRepository): Response
+    {
+        // Récupère l'ID du barbier sélectionné ou null pour "Sans préférence"
+        $barberId = $request->request->get('barber');
+        $barber   = $barberId ? $barberRepository->find($barberId) : null;
+
+        return $this->render('reservation/confirm.html.twig', [
+            'barber' => $barber,
         ]);
     }
 }
