@@ -14,8 +14,15 @@
       <a href="#" class="header__nav-link">Le shop</a>
     </nav>
 
-    <a href="#" class="header__user-icon">
-      <img src="{{ asset('images/icon_user.png') }}" alt="Utilisateur">
-    </a>
+    {% if app.user %}
+  <a href="{{ path('app_profile') }}" class="header__user-icon" title="Mon profil">
+    <img src="{{ asset('images/icon_user.png') }}" alt="Mon profil">
+  </a>
+{% else %}
+  <a href="{{ path('app_login') }}" class="header__user-icon" title="Connexion">
+    <img src="{{ asset('images/icon_user.png') }}" alt="Connexion">
+  </a>
+{% endif %}
+
   </div>
 </header>
