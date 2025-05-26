@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mon Profil{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('build/profile.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="profile">
+  <h1 class="profile__title">Mon Profil</h1>
+  <ul class="profile__list">
+    <li class="profile__item"><strong>Prénom :</strong> {{ user.firstName }}</li>
+    <li class="profile__item"><strong>Nom :</strong> {{ user.lastName }}</li>
+    <li class="profile__item"><strong>Email :</strong> {{ user.email }}</li>
+    <li class="profile__item"><strong>Téléphone :</strong> {{ user.phone }}</li>
+  </ul>
+
+  <div class="profile__logout">
+    <form action="{{ path('app_logout') }}" method="post">
+      <button type="submit" class="profile__logout-button">Se déconnecter</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

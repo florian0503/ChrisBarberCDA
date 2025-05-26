@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% block title %}Connexion{% endblock %}
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('build/auth.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="auth">
+  <h1 class="auth__title">Se connecter</h1>
+
+  {% if error %}
+    <div class="auth__error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+  {% endif %}
+
+  <form action="{{ path('app_login') }}" method="post" class="auth__form">
+    <input 
+      type="email" 
+      name="_username" 
+      value="{{ last_username }}" 
+      placeholder="Email"
+      class="auth__form-field"
+      required
+    />
+    <input 
+      type="password" 
+      name="_password" 
+      placeholder="Mot de passe"
+      class="auth__form-field"
+      required
+    />
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+
+    <label>
+      <input type="checkbox" name="_remember_me" value="on">
+      Se souvenir de moi
+    </label>
+
+    <button type="submit" class="auth__submit">Connexion</button>
+  </form>
+
+  <p class="auth__register">
+    Pas encore de compte ? 
+    <a href="{{ path('app_register') }}" class="auth__register-link">Créer un compte</a>
+  </p>
+</div>
+{% endblock %}
