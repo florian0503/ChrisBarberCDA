@@ -136,16 +136,16 @@ class ReservationController extends AbstractController
         ]);
     }
 
-    #[Route('/reservation/step2', name: 'reservation_step2')]
-    public function selectBarber(BarberRepository $barberRepository): Response
-    {
-        $barbers = $barberRepository->findAll();
+    // #[Route('/reservation/step2', name: 'reservation_step2')]
+    // public function selectBarber(BarberRepository $barberRepository): Response
+    // {
+    //     $barbers = $barberRepository->findAll();
 
-        return $this->render('reservation/select_barber.html.twig', [
-            'headerMode'  => 'gris',
-            'barbers' => $barbers,
-        ]);
-    }
+    //     return $this->render('reservation/select_barber.html.twig', [
+    //         'headerMode'  => 'gris',
+    //         'barbers' => $barbers,
+    //     ]);
+    // }
 
     #[Route('/reservation/confirm', name: 'reservation_confirm', methods: ['POST'])]
     public function confirm(Request $request, BarberRepository $barberRepository): Response

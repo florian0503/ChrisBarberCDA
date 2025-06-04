@@ -1,15 +1,15 @@
 <header class="header{% if headerMode %} header--{{ headerMode }}{% endif %}">
   <div class="container-fluid header__container">
-    <a href="#" class="header__logo">
+    <a href="{{ path('home') }}" class="header__logo">
       <img src="{{ asset('images/logo_chrisbarber.png') }}" alt="ChrisBarber Shop">
     </a>
 
     <nav class="header__nav">
-      <a href="#" class="header__nav-link header__nav-link--active">Accueil</a>
+      <a href="{{ path('home') }}" class="header__nav-link header__nav-link--active">Accueil</a>
       <span class="header__separator" aria-hidden="true"></span>
-      <a href="reservation" class="header__nav-link">Reservation</a>
+      <a href="{{ path('reservation') }}" class="header__nav-link">Reservation</a>
       <span class="header__separator" aria-hidden="true"></span>
-      <a href="#" class="header__nav-link">L’Academy</a>
+      <a href="{{ path('app_contact') }}" class="header__nav-link">L’Academy</a>
       <span class="header__separator" aria-hidden="true"></span>
       <a href="#" class="header__nav-link">Le shop</a>
     </nav>

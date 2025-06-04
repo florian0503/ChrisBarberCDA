@@ -9,12 +9,12 @@
 
 {% block body %}
 	<div class="bg-black pt-5">
-		<div class="container py-3 prestation border border-warning rounded-4">
+		<div class="container py-3 prestation border-gold rounded-4">
 
 			<h1 class="prestation__heading text-white mb-4">1 PRESTATIONS</h1>
 
 			{% for prestation in prestations %}
-				<div class="card prestations__item mb-4 bg-dark border border-warning text-light">
+				<div class="card prestations__item mb-4 bg-dark border-gold text-light">
 					<div
 						class="card-body d-flex align-items-start w-100">
 
@@ -42,13 +42,12 @@
 
 						{# actions collées à droite #}
 						<div class="prestations__actions text-end">
-							<div class="prestations__price fs-5 mb-1">{{ prestation.price }}€</div>
+							<div class="prestations__price fs-5 mb-1">{{ prestation.price }}</div>
 							<div class="prestations__duration text-muted mb-2">{{ prestation.duration }}</div>
-							<button class="btn btn-outline-warning text-white prestations__btn">
-								Choisir
-							</button>
+							<a href="{{ path('reservation_step2') }}" class="btn btn-outline-gold prestations__btn">
+        						Choisir
+    						</a>
 						</div>
-
 					</div>
 				</div>
 			{% endfor %}

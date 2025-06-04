@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="bg-black" style="padding: 2rem;">
+<div class="contact">
+  {# flash #}
+  {% for label, messages in app.flashes %}
+    <div class="alert alert-{{ label }}">{{ messages|join('<br>')|raw }}</div>
+  {% endfor %}
+
+  <h1 class="contact__title">On vous re contact&nbsp;!</h1>
+
+  {{ form_start(contactForm, { attr: { class: 'contact__form' } }) }}
+    <div class="contact__grid">
+      {{ form_row(contactForm.firstName, { label_attr: { class: 'contact__label' }, attr: { class: 'contact__field' } }) }}
+      {{ form_row(contactForm.lastName,  { label_attr: { class: 'contact__label' }, attr: { class: 'contact__field' } }) }}
+      {{ form_row(contactForm.email,     { label_attr: { class: 'contact__label' }, attr: { class: 'contact__field' } }) }}
+      {{ form_row(contactForm.phone,     { label_attr: { class: 'contact__label' }, attr: { class: 'contact__field' } }) }}
+      {{ form_row(contactForm.objectif,  { label_attr: { class: 'contact__label' }, attr: { class: 'contact__field' } }) }}
+      {{ form_row(contactForm.niveau,    { label_attr: { class: 'contact__label' }, attr: { class: 'contact__field' } }) }}
+      <div class="contact__full">
+        {{ form_row(contactForm.source, { label_attr: { class: 'contact__label' }, attr: { class: 'contact__textarea' } }) }}
+      </div>
+    </div>
+    <button type="submit" class="contact__submit">Envoyer</button>
+  {{ form_end(contactForm) }}
+</div>
+</div>
+{% endblock %}

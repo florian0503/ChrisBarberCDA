@@ -1,66 +1,123 @@
 {# templates/reservation/select_barber.html.twig #}
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('build/calendar.css') }}">
+{% endblock %}
+
 {% block body %}
 <div class="bg-black">
-<div class="container py-5">
-  <div class="card bg-black border-gold rounded-4 p-4 text-light">
-    <h2 class="mb-3">2.1 Barber</h2>
-    <p class="mb-4">Avec qui ?</p>
+	<div class="container py-5">
+		<div class="card bg-black-secondary border-gold rounded-4 p-4 text-light">
+			<h2 class="mb-3">2.1 Barber</h2>
+			<p class="mb-4">Avec qui ?</p>
 
-    <form method="post" action="{{ path('reservation_confirm') }}">
-      <div class="row g-4">
+			<form method="get" action="{{ path('reservation_step2') }}">
+				<div class="row g-4">
+					<div class="col-md-3 barber-card-wrapper">
+						<input class="d-none barber-input" type="radio" id="barber_none" name="barber" value="" {% if not selectedBarber %} checked {% endif %}>
+						<label for="barber_none" class="card barber-card rounded-4 p-3 text-white justify-content-center">
+							<span>Sans préférence</span>
+							<span class="select-icon"></span>
+						</label>
+					</div>
 
-        {# — Sans préférence — #}
-        <div class="col-md-3 barber-card-wrapper">
-          <input
-            class="d-none barber-input"
-            type="radio"
-            id="barber_none"
-            name="barber"
-            value=""
-            checked
-          >
-          <label
-            for="barber_none"
-            class="card barber-card rounded-4 p-3 text-white justify-content-center"
-          >
-            <span>Sans préférence</span>
-            <span class="select-icon"></span>
-          </label>
-        </div>
+					{% for barber in barbers %}
+						<div class="col-md-3 barber-card-wrapper">
+							<input class="d-none barber-input" type="radio" id="barber_{{ barber.id }}" name="barber" value="{{ barber.id }}" {% if selectedBarber and barber.id == selectedBarber.id %} checked {% endif %}>
+							<label for="barber_{{ barber.id }}" class="card barber-card rounded-4 p-3 text-white">
+								<div class="d-flex align-items-center">
+									<img src="{{ asset('uploads/barbers/' ~ barber.photo) }}" alt="Photo de {{ barber.firstName }}" class="rounded-circle me-3" width="60" height="60">
+									<span class="h5 mb-0">{{ barber.firstName }}</span>
+								</div>
+								<span class="select-icon"></span>
+							</label>
+						</div>
+					{% endfor %}
+				</div>
+			</form>
+		</div>
+	</div>
 
-        {# — Chaque barbier de la BDD — #}
-        {% for barber in barbers %}
-          <div class="col-md-3 barber-card-wrapper">
-            <input
-              class="d-none barber-input"
-              type="radio"
-              id="barber_{{ barber.id }}"
-              name="barber"
-              value="{{ barber.id }}"
-            >
-            <label
-              for="barber_{{ barber.id }}"
-              class="card barber-card rounded-4 p-3 text-white"
-            >
-              <div class="d-flex align-items-center">
-                <img
-                  src="{{ asset('uploads/barbers/' ~ barber.photo) }}"
-                  alt="Photo de {{ barber.firstName }}"
-                  class="rounded-circle me-3"
-                  width="60" height="60"
-                >
-                <span class="h5 mb-0">{{ barber.firstName }}</span>
-              </div>
-              <span class="select-icon"></span>
-            </label>
-          </div>
+<div class="container bg-black-secondary border-gold rounded-4 p-4 reservation-calendar-outer">
+  <h2 class="text-light mb-4">2.2 Choix de la date & heure</h2>
+
+  <div class="reservation-calendar-inner border-gold rounded-3 p-3">
+    {# Boutons Matin / Après-midi #}
+    <div class="d-flex justify-content-center mb-4">
+      <button type="button" class="btn-select-journee me-3 active" data-period="morning">MATIN</button>
+      <button type="button" class="btn-select-journee"        data-period="afternoon">APRÈS-MIDI</button>
+    </div>
+    <table class="calendar-table w-100 text-light">
+      <thead>
+        <tr>
+          <th class="time-col"></th>
+          {% for date in dates %}
+            <th class="day-header">{{ loop.index0 == 0 ? 'Aujourd’hui' : date|date('D') }}</th>
+          {% endfor %}
+        </tr>
+        <tr>
+          <th class="time-col"></th>
+          {% for date in dates %}
+            <th class="date-header">{{ date|date('d M') }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for time in times %}
+          <tr data-period="{{ time < '14:00' ? 'morning' : 'afternoon' }}" class="{{ time >= '14:00' ? 'd-none' }}">
+            <td class="time-col">{{ time }}</td>
+            {% for date in dates %}
+              {% set dayKey = date|date('Y-m-d') %}
+              {% set isRes = reserved[dayKey] is defined and reserved[dayKey][time] is defined %}
+              <td class="slot {{ isRes ? 'slot--unavailable' : 'slot--available' }}" {% if not isRes %}data-date="{{ dayKey }}" data-time="{{ time }}"{% endif %}>
+                {{ isRes ? '' : time }}
+              </td>
+            {% endfor %}
+          </tr>
         {% endfor %}
-
-      </div>
-    </form>
+      </tbody>
+    </table>
   </div>
 </div>
-</div>
 {% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1) Auto-submit quand on change de barber
+      document.querySelectorAll('input[name="barber"]').forEach(input => {
+        input.addEventListener('change', () => input.form.submit());
+      });
+
+      // 2) Toggle Matin / Après-midi
+      document.querySelectorAll('.btn-select-journee').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const period = btn.dataset.period;
+          // Active state sur les boutons
+          document.querySelectorAll('.btn-select-journee')
+            .forEach(b => b.classList.toggle('active', b === btn));
+          // Montre/masque les lignes
+          document.querySelectorAll('tbody tr')
+            .forEach(tr => tr.classList.toggle('d-none', tr.dataset.period !== period));
+        });
+      });
+
+      // 3) Clic sur créneau disponible → redirection
+      document.querySelectorAll('.slot--available').forEach(cell => {
+        cell.addEventListener('click', () => {
+          const date = cell.dataset.date;
+          const time = cell.dataset.time;
+          const barberParam = {{ selectedBarber ? selectedBarber.id : 'null' }};
+          let url = `{{ path('reservation_confirm') }}?date=${date}&time=${time}`;
+          if (barberParam !== null) {
+            url += `&barber=${barberParam}`;
+          }
+          window.location.href = url;
+        });
+      });
+    });
+  </script>
+{% endblock %}
+
