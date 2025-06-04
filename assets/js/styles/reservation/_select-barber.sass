@@ -29,3 +29,67 @@
     .select-icon
       border-color: #fff
       background-color: #fff
+
+  .reservation-calendar-outer
+    background: $black-secondary
+    border: 1px solid $gold
+    border-radius: 1.5rem
+    padding: 1.5rem
+    margin-top: 2rem
+
+.reservation-calendar-inner
+  background: #000
+  border: 1px solid $gold
+  border-radius: 1rem
+  padding: 2rem
+
+.calendar-table
+  width: 100%
+  border-collapse: collapse
+  text-align: center
+
+  th, td
+    padding: 0.75rem 0.5rem
+
+  th.day-header
+    padding-top: 1rem
+    color: #fff
+
+  th.date-header
+    color: #fff
+    border-top: none
+
+  td.time-col
+    color: #fff
+    font-weight: 500
+    background: transparent
+
+  .slot
+    &--available
+      cursor: pointer
+      color: #fff
+
+    &--unavailable
+      background: #111
+      opacity: 0.3
+      pointer-events: none
+
+.calendar-table thead tr:nth-child(2) th
+  border-bottom: 1px solid #fff
+
+.calendar-table
+  th.time-col,
+  td.time-col
+    border-right: 1px solid #fff
+
+.btn-select-journee
+  padding: 0.75rem 7rem
+  border: 1px solid $gold
+  border-radius: 0.5rem
+  background: transparent
+  transition: all 0.3s
+  color: #fff 
+  
+  &.active
+    background: $light-gold
+    color: $black-secondary
