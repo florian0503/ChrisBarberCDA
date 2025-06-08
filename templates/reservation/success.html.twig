@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement réussi{% endblock %}
+
+{% block body %}
+<div class="bg-black">
+<div class="container py-5">
+  <div class="card bg-black-secondary border-gold rounded-4 p-4 text-light mx-auto" style="max-width: 600px;">
+    <h2 class="mb-4">Paiement réussi 🎉</h2>
+    <p>Merci ! Votre rendez-vous a bien été payé. Nous vous enverrons bientôt un e-mail de confirmation.</p>
+    <a href="{{ path('home') }}" class="btn btn-outline-gold mt-3">Retour à l’accueil</a>
+  </div>
+</div>
+</div>
+{% endblock %}

@@ -1,28 +1,45 @@
+{# templates/security/profile.html.twig #}
 {% extends 'base.html.twig' %}
 {% block title %}Mon Profil{% endblock %}
 
 {% block stylesheets %}
   {{ parent() }}
+  {# Chargez ici votre CSS spécifique pour la page profil #}
   <link rel="stylesheet" href="{{ asset('build/profile.css') }}">
 {% endblock %}
 
 {% block body %}
+<div class="bg-black">
 <div class="profile">
   <h1 class="profile__title">Mon Profil</h1>
+
   <ul class="profile__list">
-    <li class="profile__item"><strong>Prénom :</strong> {{ user.firstName }}</li>
-    <li class="profile__item"><strong>Nom :</strong> {{ user.lastName }}</li>
-    <li class="profile__item"><strong>Email :</strong> {{ user.email }}</li>
-    <li class="profile__item"><strong>Téléphone :</strong> {{ user.phone }}</li>
+    <li class="profile__item">
+      <span class="profile__label">Prénom :</span>
+      <span class="profile__value">{{ user.firstName }}</span>
+    </li>
+    <li class="profile__item">
+      <span class="profile__label">Nom :</span>
+      <span class="profile__value">{{ user.lastName }}</span>
+    </li>
+    <li class="profile__item">
+      <span class="profile__label">Email :</span>
+      <span class="profile__value">{{ user.email }}</span>
+    </li>
+    <li class="profile__item">
+      <span class="profile__label">Téléphone :</span>
+      <span class="profile__value">{{ user.phone }}</span>
+    </li>
   </ul>
 
   <div class="profile__logout">
     <form action="{{ path('app_logout') }}" method="post">
-      <button type="submit" class="profile__logout-button">Se déconnecter</button>
+      {# Bouton de déconnexion, on reprend le style “full-width” #}
+      <button type="submit" class="profile__button profile__button--full">
+        Se déconnecter
+      </button>
     </form>
   </div>
 </div>
+</div>
 {% endblock %}
-
-
-//test

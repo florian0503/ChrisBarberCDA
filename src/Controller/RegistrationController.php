@@ -33,6 +33,7 @@ class RegistrationController extends AbstractController
 
         return $this->render('security/register.html.twig', [
             'registrationForm' => $form->createView(),
+            'headerMode'  => 'gris',
         ]);
     }
 }
