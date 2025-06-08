@@ -17,26 +17,21 @@ class BarberController extends AbstractController
         BarberRepository $barberRepository,
         ReservationRepository $reservationRepository
     ): Response {
-        // 1. Récupération des barbiers
         $barbers = $barberRepository->findAll();
 
-        // 2. Sélection du barber
         $selectedBarber = null;
         if ($barberId = $request->query->get('barber')) {
             $selectedBarber = $barberRepository->find($barberId);
         }
 
-        // 3. Construction des dates (aujourd'hui + 5 jours suivants)
         $dates = [];
         for ($i = 0; $i < 6; $i++) {
             $dates[] = (new \DateTimeImmutable())->modify("+{$i} days");
         }
 
-        // 4. Créneaux horaires (tous les 30min)
         $times = [];
         foreach (range(9, 18) as $hour) {
             foreach ([0, 30] as $min) {
-                // jusqu'à 13h30 et 18h30
                 if (($hour === 13 && $min > 30) || ($hour === 18 && $min > 30)) {
                     continue;
                 }
@@ -44,7 +39,6 @@ class BarberController extends AbstractController
             }
         }
 
-        // 5. Récupération des réservations existantes pour le barber sur la période
         $reserved = [];
         if ($selectedBarber) {
             $start = $dates[0]->setTime(0, 0);
@@ -65,7 +59,6 @@ class BarberController extends AbstractController
             }
         }
 
-        // 6. Préparation du data pour Twig
         return $this->render('reservation/select_barber.html.twig', [
             'barbers'       => $barbers,
             'selectedBarber'=> $selectedBarber,

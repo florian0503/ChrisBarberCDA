@@ -7,22 +7,24 @@
     <nav class="header__nav">
       <a href="{{ path('home') }}" class="header__nav-link header__nav-link--active">Accueil</a>
       <span class="header__separator" aria-hidden="true"></span>
-      <a href="{{ path('reservation') }}" class="header__nav-link">Reservation</a>
+        <a href="{{ path('reservation') }}" class="header__nav-link">Reservation</a>
       <span class="header__separator" aria-hidden="true"></span>
-      <a href="{{ path('app_contact') }}" class="header__nav-link">L’Academy</a>
+        <a href="{{ path('app_contact') }}" class="header__nav-link">L’Academy</a>
       <span class="header__separator" aria-hidden="true"></span>
-      <a href="#" class="header__nav-link">Le shop</a>
+        <a href="#" class="header__nav-link">Le shop</a>
     </nav>
 
     {% if app.user %}
-  <a href="{{ path('app_profile') }}" class="header__user-icon" title="Mon profil">
-    <img src="{{ asset('images/icon_user.png') }}" alt="Mon profil">
-  </a>
-{% else %}
-  <a href="{{ path('app_login') }}" class="header__user-icon" title="Connexion">
-    <img src="{{ asset('images/icon_user.png') }}" alt="Connexion">
-  </a>
-{% endif %}
-
+      <a href="{{ path('app_profile') }}" class="header__user-icon" title="Mon profil">
+        <img src="{{ asset('images/icon_user.png') }}" alt="Mon profil">
+      </a>
+      {% else %}
+      <a href="{{ path('app_login') }}" class="header__user-icon" title="Connexion">
+        <img src="{{ asset('images/icon_user.png') }}" alt="Connexion">
+      </a>
+    {% endif %}
   </div>
 </header>
+
+
+

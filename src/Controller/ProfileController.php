@@ -14,6 +14,7 @@ class ProfileController extends AbstractController
         // app.user est l’entité User authentifiée
         return $this->render('profile/show.html.twig', [
             'user' => $this->getUser(),
+            'headerMode'  => 'gris',
         ]);
     }
 }

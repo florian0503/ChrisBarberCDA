@@ -1,0 +1,79 @@
+// variables déjà présentes dans votre projet
+$gold: #CBAD83 !default
+$light-gold: #e0c38f !default
+$black-secondary: #111111 !default
+
+// Styles pour la page Profil
+.profile
+  max-width: 600px // Ajustez la largeur souhaitée
+  margin: 3rem auto
+  padding: 2rem
+  background: #000 // Fond noir
+  border: 1px solid $gold
+  border-radius: 1rem
+  color: $gold
+
+  &__title
+    font-family: serif
+    font-size: 2.5rem
+    color: #fff
+    margin-bottom: 2.5rem
+    text-align: center
+    text-transform: capitalize
+
+  &__list
+    list-style: none
+    padding: 0
+    margin: 0 0 2rem 0
+    display: flex
+    flex-direction: column
+    gap: 1rem
+
+  &__item
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: 0.75rem 1rem
+    border: 1px solid $gold
+    border-radius: 0.5rem
+    background: $black-secondary
+
+  &__label
+    font-weight: bold
+    color: #fff
+    font-size: 1rem
+    text-transform: uppercase
+    letter-spacing: 0.05em
+
+  &__value
+    color: #ccc
+    font-size: 1rem
+
+  &__logout
+    margin-top: 2rem
+    text-align: center
+
+  &__button
+    padding: 0.75rem 1rem
+    background: transparent
+    border: 1px solid $gold
+    border-radius: 0.5rem
+    color: $gold
+    font-size: 1rem
+    font-weight: bold
+    text-transform: uppercase
+    cursor: pointer
+    transition: background 0.3s, color 0.3s, border-color 0.3s
+    width: 100% // Pleine largeur
+    display: inline-block
+    text-align: center
+    text-decoration: none // Désactive l'underline
+
+  &__button:hover
+    background: $light-gold
+    color: #111 // Utilisez votre couleur secondaire pour le texte
+    border-color: $light-gold
+
+  &__button--full
+    // Cette classe vous garantit que le bouton prend toute la largeur
+    width: 100%

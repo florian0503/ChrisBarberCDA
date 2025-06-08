@@ -1,21 +1,96 @@
+{# templates/security/register.html.twig #}
 {% extends 'base.html.twig' %}
+
 {% block title %}Inscription{% endblock %}
+
 {% block stylesheets %}
   {{ parent() }}
+  {# On suppose que build/auth.css contient déjà les styles pour .auth, .auth__form, .auth__form-field, etc. #}
   <link rel="stylesheet" href="{{ asset('build/auth.css') }}">
 {% endblock %}
 
 {% block body %}
-<div class="auth">
-  <h1 class="auth__title">Créer un compte</h1>
+<div class="auth auth--register">
+  <h1 class="auth__title">Création du compte</h1>
 
-  {{ form_start(registrationForm, {attr: {class: 'auth__form'}}) }}
-    {{ form_row(registrationForm.email,     {attr: {class: 'auth__form-field'}}) }}
-    {{ form_row(registrationForm.firstName, {attr: {class: 'auth__form-field'}}) }}
-    {{ form_row(registrationForm.lastName,  {attr: {class: 'auth__form-field'}}) }}
-    {{ form_row(registrationForm.phone,     {attr: {class: 'auth__form-field'}}) }}
-    {{ form_row(registrationForm.password,  {attr: {class: 'auth__form-field'}}) }}
-    <button type="submit" class="auth__submit">S’inscrire</button>
+  {{ form_start(registrationForm, {
+      attr: { class: 'auth__form auth__form--grid' }
+  }) }}
+
+    {# Ligne 1 : Prénom / Nom #}
+    <div class="auth__grid-row">
+      <div class="auth__grid-col">
+        {{ form_label(registrationForm.firstName, 'Prénom*', { label_attr: { class: 'auth__label' } }) }}
+        {{ form_widget(registrationForm.firstName, { attr: { class: 'auth__form-field', placeholder: 'Prénom' } }) }}
+        {{ form_errors(registrationForm.firstName) }}
+      </div>
+      <div class="auth__grid-col">
+        {{ form_label(registrationForm.lastName, 'Nom*', { label_attr: { class: 'auth__label' } }) }}
+        {{ form_widget(registrationForm.lastName, { attr: { class: 'auth__form-field', placeholder: 'Nom' } }) }}
+        {{ form_errors(registrationForm.lastName) }}
+      </div>
+    </div>
+
+    {# Ligne 2 : E-mail / Numéro de téléphone #}
+    <div class="auth__grid-row">
+      <div class="auth__grid-col">
+        {{ form_label(registrationForm.email, 'E-mail*', { label_attr: { class: 'auth__label' } }) }}
+        {{ form_widget(registrationForm.email, { attr: { class: 'auth__form-field', placeholder: 'E-mail' } }) }}
+        {{ form_errors(registrationForm.email) }}
+      </div>
+      <div class="auth__grid-col">
+        {{ form_label(registrationForm.phone, 'Numéro de téléphone*', { label_attr: { class: 'auth__label' } }) }}
+        {{ form_widget(registrationForm.phone, { attr: { class: 'auth__form-field', placeholder: 'Numéro de téléphone' } }) }}
+        {{ form_errors(registrationForm.phone) }}
+      </div>
+    </div>
+
+    {# Ligne 3 : Mot de passe / Confirmation (si votre FormType inclut "password" ET "confirmPassword") #}
+    {# 
+       Si votre RegistrationFormType ne contient qu'un seul champ "password", alors remplacez les deux colonnes
+       ci-dessous par un seul form_row(registrationForm.password). 
+       Mais si vous avez deux champs (password et confirmPassword), adaptez comme ci-dessous :
+    #}
+    {% if registrationForm.password is defined and registrationForm.confirmPassword is defined %}
+      <div class="auth__grid-row">
+        <div class="auth__grid-col">
+          {{ form_label(registrationForm.password, 'Mot de passe*', { label_attr: { class: 'auth__label' } }) }}
+          {{ form_widget(registrationForm.password, { attr: { class: 'auth__form-field', placeholder: 'Mot de passe' } }) }}
+          {{ form_errors(registrationForm.password) }}
+        </div>
+        <div class="auth__grid-col">
+          {{ form_label(registrationForm.confirmPassword, 'Confirmation du mot de passe*', { label_attr: { class: 'auth__label' } }) }}
+          {{ form_widget(registrationForm.confirmPassword, { attr: { class: 'auth__form-field', placeholder: 'Confirmation du mot de passe' } }) }}
+          {{ form_errors(registrationForm.confirmPassword) }}
+        </div>
+      </div>
+    {% else %}
+      {# Cas où vous n'avez qu'un seul champ "password" #}
+      <div class="auth__grid-row">
+        <div class="auth__grid-col" style="grid-column: 1 / -1;">
+          {{ form_label(registrationForm.password, 'Mot de passe*', { label_attr: { class: 'auth__label' } }) }}
+          {{ form_widget(registrationForm.password, { attr: { class: 'auth__form-field', placeholder: 'Mot de passe' } }) }}
+          {{ form_errors(registrationForm.password) }}
+        </div>
+      </div>
+    {% endif %}
+
+    {# Case à cocher CGU (le champ est nommé ici "agreeTerms" dans votre FormType) #}
+    {% if registrationForm.agreeTerms is defined %}
+      <div class="auth__checkbox-row">
+        {{ form_widget(registrationForm.agreeTerms, { attr: { class: 'auth__checkbox' } }) }}
+        {{ form_label(registrationForm.agreeTerms, 'J\'accepte les CGU', { label_attr: { class: 'auth__checkbox-label' } }) }}
+        {{ form_errors(registrationForm.agreeTerms) }}
+      </div>
+    {% endif %}
+
+    {# Bouton sur toute la largeur #}
+    <div class="auth__submit-row">
+      <button type="submit" class="auth__submit auth__submit--full">
+        CRÉER MON COMPTE
+      </button>
+    </div>
+
   {{ form_end(registrationForm) }}
 </div>
 {% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirmation de réservation{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('build/calendar.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="bg-black">
+<div class="container py-5">
+  <div class="card bg-black-secondary border-gold rounded-4 p-4 text-light mx-auto" style="max-width: 600px;">
+    <h2 class="mb-4">Confirmer votre rendez-vous</h2>
+
+    {# Affiche le barbier ou « Sans préférence » #}
+    <div class="mb-3">
+      <strong>Barbier :</strong>
+      {% if barber %}
+        {{ barber.firstName }} {{ barber.lastName|default('') }}
+      {% else %}
+        Sans préférence
+      {% endif %}
+    </div>
+
+    {# Affiche la date et l’heure #}
+    <div class="mb-3">
+      <strong>Date :</strong> {{ date|date('d/m/Y') }}
+    </div>
+    <div class="mb-4">
+      <strong>Heure :</strong> {{ time }}
+    </div>
+
+    {# Bouton « Payer » (à remplacer par ton form de paiement) #}
+    <form action="{{ path('reservation_create_checkout') }}" method="POST">
+      {# Hidden fields pour transmettre au backend le barbier, date, et time #}
+      <input type="hidden" name="barberId" value="{{ barber ? barber.id : '' }}">
+      <input type="hidden" name="date" value="{{ date }}">
+      <input type="hidden" name="time" value="{{ time }}">
+
+      <button type="submit" class="btn btn-outline-gold">
+        Payer
+      </button>
+    </form>
+  </div>
+</div>
+
+</div>
+{% endblock %}
