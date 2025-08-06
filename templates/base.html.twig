@@ -19,8 +19,60 @@
 
     {% include 'components/_footer.html.twig' %}
 
+    <!-- Bouton scroll to top -->
+    <button id="scrollToTop" class="scroll-to-top">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/>
+      </svg>
+    </button>
+
     {% block javascripts %}
       {{ encore_entry_script_tags('app') }}
+      <script>
+        // Gestion du header qui se cache au scroll (toutes les pages)
+        let lastScrollY = window.scrollY;
+        let ticking = false;
+        const header = document.querySelector('.header');
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+
+        function updateHeader() {
+          const currentScrollY = window.scrollY;
+          
+          // Cache le header quand on descend
+          if (currentScrollY > lastScrollY && currentScrollY > 100) {
+            header.classList.add('header--hidden');
+          } else {
+            header.classList.remove('header--hidden');
+          }
+          
+          // Affiche/cache le bouton scroll to top
+          if (currentScrollY > 300) {
+            scrollToTopBtn.classList.add('show');
+          } else {
+            scrollToTopBtn.classList.remove('show');
+          }
+          
+          lastScrollY = currentScrollY;
+          ticking = false;
+        }
+
+        function requestTick() {
+          if (!ticking) {
+            requestAnimationFrame(updateHeader);
+            ticking = true;
+          }
+        }
+
+        // Scroll to top functionality
+        scrollToTopBtn.addEventListener('click', () => {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+
+        window.addEventListener('scroll', requestTick);
+      </script>
     {% endblock %}
   </body>
 </html>

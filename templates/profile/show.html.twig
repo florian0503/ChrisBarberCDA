@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block body %}
-<div class="bg-black">
+<div class="profile-container">
 <div class="profile">
   <h1 class="profile__title">Mon Profil</h1>
 
@@ -32,9 +32,73 @@
     </li>
   </ul>
 
+  {# Réservations à venir #}
+  <div class="profile__section">
+    <h2 class="profile__section-title">Mes prochaines réservations</h2>
+    {% if upcomingReservations is empty %}
+      <p class="profile__empty">Aucune réservation à venir</p>
+    {% else %}
+      <div class="profile__reservations">
+        {% for reservation in upcomingReservations %}
+          <div class="profile__reservation profile__reservation--upcoming">
+            <div class="profile__reservation-info">
+              <div class="profile__reservation-date">
+                {{ reservation.scheduledAt|date('d/m/Y à H:i') }}
+              </div>
+              <div class="profile__reservation-barber">
+                {% if reservation.barber %}
+                  Avec {{ reservation.barber.firstName }}
+                {% else %}
+                  Sans préférence de barbier
+                {% endif %}
+              </div>
+              <div class="profile__reservation-status">
+                <span class="profile__status profile__status--{{ reservation.status }}">
+                  {{ reservation.status == 'confirmed' ? 'Confirmée' : (reservation.status == 'pending' ? 'En attente' : 'Annulée') }}
+                </span>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  {# Réservations passées #}
+  <div class="profile__section">
+    <h2 class="profile__section-title">Mes réservations passées</h2>
+    {% if pastReservations is empty %}
+      <p class="profile__empty">Aucune réservation passée</p>
+    {% else %}
+      <div class="profile__reservations">
+        {% for reservation in pastReservations %}
+          <div class="profile__reservation profile__reservation--past">
+            <div class="profile__reservation-info">
+              <div class="profile__reservation-date">
+                {{ reservation.scheduledAt|date('d/m/Y à H:i') }}
+              </div>
+              <div class="profile__reservation-barber">
+                {% if reservation.barber %}
+                  Avec {{ reservation.barber.firstName }}
+                {% else %}
+                  Sans préférence de barbier
+                {% endif %}
+              </div>
+              <div class="profile__reservation-status">
+                <span class="profile__status profile__status--past">
+                  Terminée
+                </span>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
   <div class="profile__logout">
     <form action="{{ path('app_logout') }}" method="post">
-      {# Bouton de déconnexion, on reprend le style “full-width” #}
+      {# Bouton de déconnexion, on reprend le style "full-width" #}
       <button type="submit" class="profile__button profile__button--full">
         Se déconnecter
       </button>

@@ -5,13 +5,13 @@
     </a>
 
     <nav class="header__nav">
-      <a href="{{ path('home') }}" class="header__nav-link header__nav-link--active">Accueil</a>
+      <a href="{{ path('home') }}" class="header__nav-link {{ app.request.get('_route') == 'home' ? 'header__nav-link--active' : '' }}">Accueil</a>
       <span class="header__separator" aria-hidden="true"></span>
-        <a href="{{ path('reservation') }}" class="header__nav-link">Reservation</a>
+        <a href="{{ path('reservation') }}" class="header__nav-link {{ app.request.get('_route') starts with 'reservation' ? 'header__nav-link--active' : '' }}">Reservation</a>
       <span class="header__separator" aria-hidden="true"></span>
-        <a href="{{ path('app_contact') }}" class="header__nav-link">L’Academy</a>
+        <a href="{{ path('app_contact') }}" class="header__nav-link {{ app.request.get('_route') == 'app_contact' ? 'header__nav-link--active' : '' }}">L'Academy</a>
       <span class="header__separator" aria-hidden="true"></span>
-        <a href="#" class="header__nav-link">Le shop</a>
+      <a href="{{ path('shop') }}" class="header__nav-link {{ app.request.get('_route') == 'shop' ? 'header__nav-link--active' : '' }}">Le shop</a>
     </nav>
 
     {% if app.user %}

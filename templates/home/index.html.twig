@@ -5,28 +5,31 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-	<style>
-		.header {
-			position: absolute;
-			top: 0;
-		}
-	</style>
 {% endblock %}
 
 {% block body %}
 	<div class="home__hero-wrapper">
 		<img src="{{ asset('images/chrisbarber_salon.png') }}" alt="Salon ChrisBarber" class="home__salon">
+		<div class="home__hero-content">
+			<h1 class="home__hero-title">ChrisBarber Shop</h1>
+			<p class="home__hero-subtitle">L'art du barbier moderne dans un cadre d'exception</p>
+			<a href="{{ path('reservation') }}" class="home__hero-cta">
+				Réserver maintenant
+			</a>
+		</div>
 	</div>
-	<div class="separator"></div>
-
-	<div class="cards">
-		{% include 'home/_card.html.twig' %}
+	
+	<div class="home__content">
+		<div class="separator"></div>
+		<div class="cards">
+			{% include 'home/_card.html.twig' %}
+		</div>
+		<div class="separator"></div>
+		<div class="team">
+			{% include 'home/_team.html.twig' %}
+		</div>
+		<div class="separator"></div>
+		{% include 'home/_location.html.twig' %}
+		<div class="separator"></div>
 	</div>
-	<div class="separator"></div>
-	<div class="team">
-		{% include 'home/_team.html.twig' %}
-	</div>
-	<div class="separator"></div>
-	{% include 'home/_location.html.twig' %}
-	<div class="separator"></div>
 {% endblock %}

@@ -1,0 +1,167 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ product.name }} - Shop - ChrisBarber{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('build/shop.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="product-detail">
+  <div class="container">
+    <div class="product-detail__breadcrumb">
+      <a href="{{ path('home') }}">Accueil</a>
+      <span>/</span>
+      <a href="{{ path('shop') }}">Shop</a>
+      <span>/</span>
+      <span>{{ product.name }}</span>
+    </div>
+
+    <div class="product-detail__content">
+      <div class="product-detail__gallery">
+        <div class="gallery">
+          <div class="gallery__main">
+            <img src="{{ asset('images/products/' ~ product.image) }}" alt="{{ product.name }}" class="gallery__main-image" id="mainImage">
+          </div>
+          
+          {% if product.images %}
+          <div class="gallery__thumbnails">
+            <div class="gallery__thumbnail active">
+              <img src="{{ asset('images/products/' ~ product.image) }}" alt="{{ product.name }}">
+            </div>
+            {% for image in product.images %}
+            <div class="gallery__thumbnail">
+              <img src="{{ asset('images/products/' ~ image) }}" alt="{{ product.name }}">
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="product-detail__info">
+        <div class="product-info">
+          <div class="product-info__category">{{ product.category|title }}</div>
+          <h1 class="product-info__title">{{ product.name }}</h1>
+          
+          <div class="product-info__price">
+            <span class="product-info__price-value">{{ product.price }}€</span>
+          </div>
+
+          <div class="product-info__stock">
+            {% if product.stock > 10 %}
+              <span class="product-info__stock-status product-info__stock-status--available">En stock</span>
+            {% elseif product.stock > 0 %}
+              <span class="product-info__stock-status product-info__stock-status--limited">Stock limité ({{ product.stock }} restants)</span>
+            {% else %}
+              <span class="product-info__stock-status product-info__stock-status--unavailable">Rupture de stock</span>
+            {% endif %}
+          </div>
+
+          <div class="product-info__description">
+            <h3>Description</h3>
+            <p>{{ product.description|nl2br }}</p>
+          </div>
+
+          <div class="product-info__actions">
+            <div class="quantity-selector">
+              <button class="quantity-selector__btn quantity-selector__btn--minus" id="quantityMinus">-</button>
+              <input type="number" class="quantity-selector__input" id="quantityInput" value="1" min="1" max="{{ product.stock }}">
+              <button class="quantity-selector__btn quantity-selector__btn--plus" id="quantityPlus">+</button>
+            </div>
+
+            <button class="add-to-cart-btn" 
+                    id="addToCartBtn"
+                    data-product-id="{{ product.id }}"
+                    {% if product.stock <= 0 %}disabled{% endif %}>
+              {% if product.stock <= 0 %}
+                Rupture de stock
+              {% else %}
+                Ajouter au panier - {{ product.price }}€
+              {% endif %}
+            </button>
+          </div>
+
+          <div class="product-info__features">
+            <h3>Caractéristiques</h3>
+            <ul class="features-list">
+              <li class="features-list__item">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                </svg>
+                Produit premium
+              </li>
+              <li class="features-list__item">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                </svg>
+                Livraison rapide
+              </li>
+              <li class="features-list__item">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                </svg>
+                Garantie satisfaction
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-detail__back">
+      <a href="{{ path('shop') }}" class="back-btn">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+        </svg>
+        Retour au shop
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Panier Slider (même que dans index) -->
+<div class="cart-slider" id="cartSlider">
+  <div class="cart-slider__overlay"></div>
+  <div class="cart-slider__content">
+    <div class="cart-slider__header">
+      <h3 class="cart-slider__title">Mon Panier</h3>
+      <button class="cart-slider__close" id="closeCart">
+        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="cart-slider__body">
+      <div class="cart-items" id="cartItems">
+        <!-- Les items du panier seront ajoutés dynamiquement -->
+      </div>
+    </div>
+    
+    <div class="cart-slider__footer">
+      <div class="cart-total">
+        <div class="cart-total__label">Total:</div>
+        <div class="cart-total__amount" id="cartTotal">0.00€</div>
+      </div>
+      <button class="cart-checkout-btn" id="checkoutBtn">
+        Commander
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Bouton panier flottant -->
+<div class="cart-floating-btn" id="cartFloatingBtn">
+  <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+  </svg>
+  <span class="cart-floating-btn__count" id="cartCount">0</span>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('build/shop.js') }}"></script>
+{% endblock %}

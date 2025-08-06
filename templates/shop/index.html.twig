@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Shop - ChrisBarber{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('build/shop.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="shop">
+  <div class="shop__hero">
+    <div class="container">
+      <h1 class="shop__hero-title">Shop</h1>
+      <p class="shop__hero-subtitle">Découvrez notre sélection de produits premium pour votre style</p>
+    </div>
+  </div>
+
+  <div class="shop__content">
+    <div class="container">
+      <div class="shop__filters">
+        <button class="shop__filter-btn active" data-category="all">Tout</button>
+        <button class="shop__filter-btn" data-category="shampoing">Shampoings</button>
+        <button class="shop__filter-btn" data-category="cire">Cires</button>
+        <button class="shop__filter-btn" data-category="huile">Huiles</button>
+        <button class="shop__filter-btn" data-category="accessoire">Accessoires</button>
+      </div>
+
+      <div class="shop__products">
+        {% for product in products %}
+          <div class="shop__product-card" data-category="{{ product.category }}">
+            <div class="product-card">
+              <div class="product-card__image-wrapper">
+                <img src="{{ asset('images/products/' ~ product.image) }}" alt="{{ product.name }}" class="product-card__image">
+                <div class="product-card__overlay">
+                  <a href="{{ path('shop_product_detail', {id: product.id}) }}" class="product-card__view-btn">
+                    Voir le produit
+                  </a>
+                </div>
+                {% if product.stock <= 5 %}
+                  <div class="product-card__badge product-card__badge--limited">Stock limité</div>
+                {% endif %}
+              </div>
+              
+              <div class="product-card__content">
+                <div class="product-card__category">{{ product.category|title }}</div>
+                <h3 class="product-card__title">{{ product.name }}</h3>
+                <p class="product-card__description">{{ product.description|slice(0, 100) }}...</p>
+                
+                <div class="product-card__footer">
+                  <div class="product-card__price">{{ product.price }}€</div>
+                  <button class="product-card__add-btn" 
+                          data-product-id="{{ product.id }}"
+                          {% if product.stock <= 0 %}disabled{% endif %}>
+                    {% if product.stock <= 0 %}
+                      Rupture de stock
+                    {% else %}
+                      Ajouter au panier
+                    {% endif %}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <div class="shop__empty">
+            <h3>Aucun produit disponible</h3>
+            <p>Revenez bientôt pour découvrir nos nouveautés !</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Panier Slider -->
+<div class="cart-slider" id="cartSlider">
+  <div class="cart-slider__overlay"></div>
+  <div class="cart-slider__content">
+    <div class="cart-slider__header">
+      <h3 class="cart-slider__title">Mon Panier</h3>
+      <button class="cart-slider__close" id="closeCart">
+        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="cart-slider__body">
+      <div class="cart-items" id="cartItems">
+        <!-- Les items du panier seront ajoutés dynamiquement -->
+      </div>
+    </div>
+    
+    <div class="cart-slider__footer">
+      <div class="cart-total">
+        <div class="cart-total__label">Total:</div>
+        <div class="cart-total__amount" id="cartTotal">0.00€</div>
+      </div>
+      <button class="cart-checkout-btn" id="checkoutBtn">
+        Commander
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Bouton panier flottant -->
+<div class="cart-floating-btn" id="cartFloatingBtn">
+  <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+  </svg>
+  <span class="cart-floating-btn__count" id="cartCount">0</span>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('build/shop.js') }}"></script>
+{% endblock %}
