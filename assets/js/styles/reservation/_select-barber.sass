@@ -68,11 +68,31 @@
     &--available
       cursor: pointer
       color: #fff
+      background: rgba(255, 255, 255, 0.1)
+      border: 1px solid rgba(255, 255, 255, 0.2)
+      transition: all 0.3s
+      border-radius: 4px
+      
+      &:hover
+        background: rgba(255, 255, 255, 0.2)
+        border-color: $gold
 
     &--unavailable
-      background: #111
-      opacity: 0.3
-      pointer-events: none
+      background: #333 !important
+      color: #666 !important
+      cursor: not-allowed
+      opacity: 0.5
+      position: relative
+      border-radius: 4px
+      
+      &:after
+        content: "×"
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        font-size: 1.2rem
+        color: #999
 
 .calendar-table thead tr:nth-child(2) th
   border-bottom: 1px solid #fff

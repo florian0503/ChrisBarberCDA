@@ -1,12 +1,12 @@
-// variables déjà présentes dans votre projet
-$gold: #CBAD83 !default
-$light-gold: #e0c38f !default
-$black-secondary: #111111 !default
-
 // Styles pour la page Profil
+.profile-container
+  background: black
+  min-height: 100vh
+  padding: 2rem 0
+
 .profile
-  max-width: 600px // Ajustez la largeur souhaitée
-  margin: 3rem auto
+  max-width: 800px
+  margin: 0 auto
   padding: 2rem
   background: #000 // Fond noir
   border: 1px solid $gold
@@ -77,3 +77,86 @@ $black-secondary: #111111 !default
   &__button--full
     // Cette classe vous garantit que le bouton prend toute la largeur
     width: 100%
+
+  // Sections de réservations
+  &__section
+    margin-top: 3rem
+    padding: 1.5rem 0
+
+  &__section-title
+    color: #fff
+    font-size: 1.5rem
+    margin-bottom: 1.5rem
+    border-bottom: 1px solid $gold
+    padding-bottom: 0.5rem
+
+  &__empty
+    color: #666
+    font-style: italic
+    text-align: center
+    padding: 2rem
+
+  &__reservations
+    display: flex
+    flex-direction: column
+    gap: 1rem
+
+  &__reservation
+    background: $black-secondary
+    border: 1px solid $gold
+    border-radius: 0.5rem
+    padding: 1.5rem
+    transition: all 0.3s
+
+    &--upcoming
+      border-left: 4px solid #28a745
+      
+      &:hover
+        background: rgba(40, 167, 69, 0.1)
+
+    &--past
+      border-left: 4px solid #6c757d
+      opacity: 0.8
+
+  &__reservation-info
+    display: flex
+    justify-content: space-between
+    align-items: center
+    flex-wrap: wrap
+    gap: 1rem
+
+  &__reservation-date
+    color: #fff
+    font-weight: bold
+    font-size: 1.1rem
+
+  &__reservation-barber
+    color: $gold
+    font-size: 0.9rem
+
+  &__reservation-status
+    display: flex
+    align-items: center
+
+  &__status
+    padding: 0.25rem 0.75rem
+    border-radius: 1rem
+    font-size: 0.75rem
+    font-weight: bold
+    text-transform: uppercase
+
+    &--confirmed
+      background: #28a745
+      color: white
+
+    &--pending  
+      background: #ffc107
+      color: #000
+
+    &--cancelled
+      background: #dc3545
+      color: white
+
+    &--past
+      background: #6c757d
+      color: white
