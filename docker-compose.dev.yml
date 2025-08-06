@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  database:
+    image: mysql:8.0
+    container_name: chrisbarber_mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: chrisbarber_db
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony123
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: chrisbarber_phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: database
+      MYSQL_ROOT_PASSWORD: root
+    depends_on:
+      - database
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: chrisbarber_mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # Web interface
+
+volumes:
+  mysql_data:
