@@ -28,6 +28,9 @@ class Reservation
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $stripeSessionId = null;
     
+    #[ORM\Column(type: 'string', length: 20)]
+    private string $status = 'pending'; // pending, confirmed, cancelled
+    
     public function getStripeSessionId(): ?string
     {
         return $this->stripeSessionId;
@@ -82,5 +85,16 @@ class Reservation
     public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
+    }
+    
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+    
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+        return $this;
     }
 }

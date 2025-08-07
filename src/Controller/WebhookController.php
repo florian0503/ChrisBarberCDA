@@ -5,6 +5,8 @@ namespace App\Controller;
 
 use App\Entity\Reservation;
 use App\Repository\BarberRepository;
+use App\Repository\ReservationRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Checkout\Session;
 use Stripe\Event;
@@ -22,7 +24,7 @@ class WebhookController extends AbstractController
     public function handleWebhook(
         Request $request,
         EntityManagerInterface $em,
-        BarberRepository $barberRepository
+        ReservationRepository $reservationRepository
     ): Response {
         // 1) Votre endpoint secret configuré dans Stripe Dashboard :
         $endpointSecret = $_ENV['STRIPE_WEBHOOK_SECRET']; 
@@ -51,25 +53,23 @@ class WebhookController extends AbstractController
 
             // 4) Lecture des metadata
             $metadata = $session->metadata;
-            $barberId = $metadata->barber_id;
-            $dateStr  = $metadata->date;    // ex. "2025-06-05"
-            $timeStr  = $metadata->time;    // ex. "09:00"
+            $reservationId = $metadata->reservation_id ?? null;
+            
+            if (!$reservationId) {
+                return new Response('Reservation ID not found in metadata', 400);
+            }
 
-            // 5) Reconstitution de la date/heure en DateTimeImmutable
-            $scheduledAt = \DateTimeImmutable::createFromFormat('Y-m-d H:i', 
-                $dateStr . ' ' . $timeStr
-            );
+            // 5) Trouver la réservation existante
+            $reservation = $reservationRepository->find($reservationId);
+            
+            if (!$reservation) {
+                return new Response('Reservation not found', 400);
+            }
 
-            // 6) Récupération de l’entité Barber (ou null si vide)
-            $barber = $barberId ? $barberRepository->find($barberId) : null;
-
-            // 7) Création de la réservation
-            $reservation = new Reservation();
-            $reservation->setBarber($barber);
-            $reservation->setScheduledAt($scheduledAt);
+            // 6) Confirmer la réservation
+            $reservation->setStatus('confirmed');
             $reservation->setStripeSessionId($session->id);
 
-            $em->persist($reservation);
             $em->flush();
         }
 
